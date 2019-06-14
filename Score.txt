@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+class Score{
+private:
+    int x;
+    int y;
+public:
+    Score(int x1=1,int y1=1){
+       x=x1;
+       y=y1;
+    }
+    Score operator+(const Score s)const;
+    Score operator-(const Score s)const;
+    Score operator*(const Score s)const;
+    Score operator/(const Score s)const;
+    void input(){
+        cout<<"请输入分子:";
+        cin>>x;
+        cout<<"请输入分母:";
+        cin>>y;
+        while(y==0)
+        {
+            cout<<"输入错误，请重新输入：";
+            cin>>y;
+        }
+    }
+    void output(){
+        cout<<x<<"/"<<y<<endl;
+    }
+    void simplify(){
+        int m,n,d=0;
+        m=x;n=y;
+        if(m==0){
+            return;
+        }
+        if(m<n){
+            swap(m,n);
+        }
+        d=m%n;
+        while(d!=0){
+            m=n;
+            n=d;
+            d=m%n;
+            //cout<<m<<" "<<n<<" "<<d<<" "<<endl;
+        }
+        x=x/n;
+        y=y/n;
+    }
+};
+Score Score::operator+(const Score s)const{
+    return Score(x*s.y+s.x*y,y*s.y);
+}
+Score Score::operator-(const Score s)const{
+    return Score(x*s.y-s.x*y,y*s.y);
+}
+Score Score::operator*(const Score s)const{
+    return Score(x*s.x,y*s.y);
+}
+Score Score::operator/(const Score s)const{
+    return Score(x*s.y,y*s.x);
+}
+int main()
+{
+    Score s1,s2,s3,s4,s5,s6;
+    s1.input();
+    s2.input();
+    s3=s2+s1;
+    s3.simplify();
+    cout<<"s1+s2=";
+    s3.output();
+    s4=s1-s2;
+    s4.simplify();
+    cout<<"s1-s2=";
+    s4.output();
+    s5=s2*s1;
+    s5.simplify();
+    cout<<"s1*s2=";
+    s5.output();
+    s6=s1/s2;
+    s6.simplify();
+    cout<<"s1/s2=";
+    s6.output();
+    return 0;
+}
